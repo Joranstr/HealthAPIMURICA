@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Client App</title>
+    <!--<script src="lib/jquery/jquery.min.js"></script>-->
+    <!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+    body {
+        padding: 0;
+        margin: 0;
+        height: 100vh;
+        /*width: 100vw;*/
+        background-image: url(https://i2.wp.com/wallpapersfortech.com/wp-content/uploads/2018/04/72D1C712-266F-4CEA-B20D-043152A998F6.jpeg?ssl=1);
+        background-repeat: no-repeat;
+        overflow: hidden;
+        /*background-color: #196189;*/
+    }
+
+    div.page {
+        display: flex;
+        height: 100vh;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        user-select: none;
+    }
+
+        div.header {
+            color: white;
+            font-size: 4rem;
+            font-family: 'Rubik', sans-serif;
+            
+            text-shadow: 2px 2px #644C30;
+            -webkit-text-stroke-color: black;
+            -webkit-text-stroke-width: 2px;
+        }
+
+        input[type=text], select {
+            width: 30%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=submit] {
+            width: 30%;
+            background-color: #276580;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            input[type=submit]:hover {
+                background-color: #3281a3;
+            }
+
+        div.buttonGroup {
+            padding-top: 40px;
+            display: block;
+            padding-bottom: 40px;
+        }
+
+        button {
+            /*background: none;*/
+            background-color: rgba(013,027,049,0.4);
+            
+            font-family: 'Rubik', sans-serif;
+            color: white;
+            border: none;
+            font-size: 25px;
+            font-weight: bolder;
+            border-bottom: 3px groove red;
+            margin: 0px 20px;
+            transition: all 0, 3s ease;
+            /*transform: scale(1.3);*/
+            /*-webkit-text-stroke-color: #ffd700;
+            -webkit-text-stroke-width: 0.5px;*/
+        }
+
+            button:hover {
+                cursor: pointer;
+                transform: scale(1.1);
+                border-color: #614c2d;
+            }
+    </style>
+</head>
+<body>
+    <div id="main">
+
+    </div>
+    <iframe width="560" height="315" style="visibility: hidden" src="https://www.youtube.com/embed/U1mlCPMYtPk?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <script>
+        let patientModel = { patient: null, ailment: null, medication: null };
+        let Ailments = ["Covid-19", "Corona", "Fluensa", "Just drunk"];
+        let Medications = ["Paracet", "no cure", "Cola", "Ibux", "420"];
+        let addMedisin = "Medication";
+        let text = "";
+        let text2 = "";
+
+        Show();
+        function Show() {
+            document.getElementById("main").innerHTML = `<div class="page">
+                                                                <div class="header"><h3>USA's "New" Health System</h3></div>
+                                                                <div class="buttonGroup">
+                                                                    <button onclick="GoToPatiens()">Go to Patients</button>
+                                                                    <button onclick="GetSinglePatient()">Search for Patient</button>
+                                                                    <button onclick="GoToRegisterPatient()">Go to Register Patient</button>
+                                                                </div>
+                                                                <pre id="preOutput"></pre>
+                                                             </div>`;
+        }
+
+        function GetSinglePatient() {
+            document.getElementById("main").innerHTML = "";
+        }
+
+        function GotoPatients() {
+            //denne skal viste pasienter.
+            GetPatients();
+            document.getElementById("main").innerHTML = `<button onclick="GoToRegisterPatient()"></button>
+                                                            <div id="ShowPatients"></div>` ;
+        }
+        function ailmentArray() {
+
+            for (let Ailment of Ailments) {
+                text += `<option value="ailment">${Ailment}</option >`;
+
+            }
+            document.getElementById("addAilment").innerHTML = text;
+        }
+        function medicationArray() {
+
+            for (let medication of Medications) {
+                text2 += `<option value="medication">${medication}</option >`;
+
+            }
+            document.getElementById("addMedisin").innerHTML = text2;
+        }
+
+        function GoToRegisterPatient() {
+            document.getElementById("main").innerHTML = `<div class="page">
+                                                                    <div class="header"><h3>Patient Registration</h3></div>
+                                                                    <label type="text" id="name">Patient name</label>
+                                                                    <input id ="addPatientName" type="text"/>
+                                                                    <label id="ailment">Ailment</label>
+                                                                    <select id="addAilment">${text}</select>
+                                                                    <label id="medication">Medisin</label>
+                                                                    <select id="addMedisin">${text2}</select>
+                                                                    <input type="submit" id="addPatient" onclick="RegisterPatient()" value="Add Patient"/>
+                                                                    <button onclick="GoToPatiens()">Go to Patients</button>
+                                                             </div>`;
+            medicationArray();
+            ailmentArray();
+
+        }
+        function RegisterPatient() {
+
+            patientModel.patient = document.getElementById("addPatientName").innerHTML;
+            patientModel.ailment = document.getElementById("addAilment").innerHTML;
+            patientModel.medication = document.getElementById("addMedisin").innerHTML;
+
+            AddPatient();
+        }
+
+
+        async function AddPatient() {
+            const path = `/api/Patients/${patientModel.patientId}`;
+            let response = await axios.put(path, patientModel);
+            patientModel.patient = response.data;
+
+            //show();
+        }
+
+
+        async function GetAilments() {
+            let response = await axios.get(`/api/Patient/`);
+        }
+
+        async function GetMedication() {
+            let response = await axios.get(`/api/Patient/`);
+        }
+
+        async function GetPatients() {
+            let response = await axios.get(`/api/Patient/`);
+
+        }
+        //async function test() {
+
+        //    var a = await axios.get("https://localhost:44331/api/patients");
+
+        //    for (let person of a.data) {
+        //        document.getElementById("preOutput").innerText += JSON.stringify(person) + "\n";
+        //        console.log(person);
+        //    }
+        //    //document.getElementById("preOutput").innerText = JSON.stringify(a.data);
+        //console.log(a.data);
+        //}
+
+
+        //dette er jquery kode
+        //$(function() {
+        //    var getPatients = function() {
+        //        var url = "https://localhost:44331/api/patients";
+        //        $.get(url).always(showResponse);
+        //        return false;
+        //    };
+
+        //    var showResponse = function(object) {
+        //        $("#preOutput").text(JSON.stringify(object, null, 4));
+        //    };
+
+        //    $("#btnGetPatients").click(getPatients);
+        //});
+
+
+
+    </script>
+</body>
+</html>
