@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthSQLDB.Migrations
 {
     [DbContext(typeof(HealthContext))]
-    [Migration("20200505091351_AddedData")]
-    partial class AddedData
+    [Migration("20200506115554_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,15 +54,24 @@ namespace HealthSQLDB.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Doses")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Medications");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Man up"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "No Cure"
+                        });
                 });
 
             modelBuilder.Entity("HealthCore.Domain.Model.Patient", b =>
@@ -78,6 +87,13 @@ namespace HealthSQLDB.Migrations
                     b.HasKey("PatientId");
 
                     b.ToTable("Patients");
+
+                    b.HasData(
+                        new
+                        {
+                            PatientId = 1,
+                            Name = "Ola Nordmann"
+                        });
                 });
 
             modelBuilder.Entity("HealthCore.Domain.Model.PatientAilments", b =>
@@ -93,6 +109,13 @@ namespace HealthSQLDB.Migrations
                     b.HasIndex("PatientId");
 
                     b.ToTable("PatientAilments");
+
+                    b.HasData(
+                        new
+                        {
+                            AilmentId = 1,
+                            PatientId = 1
+                        });
                 });
 
             modelBuilder.Entity("HealthCore.Domain.Model.PatientMedications", b =>
@@ -101,6 +124,9 @@ namespace HealthSQLDB.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("MedicationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Doses")
                         .HasColumnType("int");
 
                     b.HasKey("PatientId", "MedicationId");

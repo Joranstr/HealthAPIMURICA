@@ -2,7 +2,7 @@
 
 namespace HealthSQLDB.Migrations
 {
-    public partial class FirstManyToMany : Migration
+    public partial class first : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -25,8 +25,7 @@ namespace HealthSQLDB.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    Doses = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -75,7 +74,8 @@ namespace HealthSQLDB.Migrations
                 columns: table => new
                 {
                     PatientId = table.Column<int>(nullable: false),
-                    MedicationId = table.Column<int>(nullable: false)
+                    MedicationId = table.Column<int>(nullable: false),
+                    Doses = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,6 +93,34 @@ namespace HealthSQLDB.Migrations
                         principalColumn: "PatientId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Ailments",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Covid-19" },
+                    { 2, "Manflu" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Medications",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Man up" },
+                    { 2, "No Cure" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Patients",
+                columns: new[] { "PatientId", "Name" },
+                values: new object[] { 1, "Ola Nordmann" });
+
+            migrationBuilder.InsertData(
+                table: "PatientAilments",
+                columns: new[] { "AilmentId", "PatientId" },
+                values: new object[] { 1, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_PatientAilments_PatientId",

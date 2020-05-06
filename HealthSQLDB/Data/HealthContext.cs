@@ -42,6 +42,8 @@ namespace HealthSQLDB.Data
                 .HasData(new Patient {PatientId = 1,  Name = "Ola Nordmann" });
             modelBuilder.Entity<PatientAilments>()
                 .HasData(new PatientAilments { AilmentId = 1, PatientId = 1 });
+            modelBuilder.Entity<Medication>()
+               .HasData(new Medication { Id = 1, Name = "Man up" }, new Medication { Id = 2, Name = "No Cure" });
         }
 
         public DbSet<Ailment> Ailments { get; set; }

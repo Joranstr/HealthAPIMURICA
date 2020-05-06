@@ -58,6 +58,18 @@ namespace HealthSQLDB.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Medications");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Man up"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "No Cure"
+                        });
                 });
 
             modelBuilder.Entity("HealthCore.Domain.Model.Patient", b =>

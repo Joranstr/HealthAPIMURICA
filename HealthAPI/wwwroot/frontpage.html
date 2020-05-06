@@ -99,8 +99,8 @@
     <iframe width="560" height="315" style="visibility: hidden" src="https://www.youtube.com/embed/U1mlCPMYtPk?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     <script>
         let patientModel = { patient: null, ailment: null, medication: null };
-        let Ailments = ["Covid-19", "Corona", "Fluensa", "Just drunk"];
-        let Medications = ["Paracet", "no cure", "Cola", "Ibux", "420"];
+        let Ailments = [];
+        let Medications = [];
         let addMedisin = "Medication";
         let text = "";
         let text2 = "";
@@ -118,34 +118,41 @@
                                                              </div>`;
         }
 
-        function GetSinglePatient() {
+        function GetSinglePatient()
+        {
             document.getElementById("main").innerHTML = "";
         }
 
-        function GotoPatients() {
+        function GotoPatients()
+        {
             //denne skal viste pasienter.
             GetPatients();
             document.getElementById("main").innerHTML = `<button onclick="GoToRegisterPatient()"></button>
                                                             <div id="ShowPatients"></div>` ;
         }
-        function ailmentArray() {
 
+        function ailmentArray() 
+        {
+            GetAilments();
             for (let Ailment of Ailments) {
-                text += `<option value="ailment">${Ailment}</option >`;
+                text += `<option value="ailment">${Ailment.name}</option >`;
 
             }
             document.getElementById("addAilment").innerHTML = text;
         }
-        function medicationArray() {
 
+        function medicationArray()
+        {
+            GetMedications();
             for (let medication of Medications) {
-                text2 += `<option value="medication">${medication}</option >`;
+                text2 += `<option value="medication">${medication.name}</option >`;
 
             }
             document.getElementById("addMedisin").innerHTML = text2;
         }
 
-        function GoToRegisterPatient() {
+        function GoToRegisterPatient()
+        {
             document.getElementById("main").innerHTML = `<div class="page">
                                                                     <div class="header"><h3>Patient Registration</h3></div>
                                                                     <label type="text" id="name">Patient name</label>
@@ -159,9 +166,17 @@
                                                              </div>`;
             medicationArray();
             ailmentArray();
-
         }
-        function RegisterPatient() {
+
+        function GoToRegisterNewMedication() {
+            document.getElementById("main").innerHTML = `<div class="page">
+                                                                <div class="header"><h3>Register New Medication</h3></div>
+                                                                <label></label>
+                                                         </div>`;
+        }
+
+        function RegisterPatient()
+        {
 
             patientModel.patient = document.getElementById("addPatientName").innerHTML;
             patientModel.ailment = document.getElementById("addAilment").innerHTML;
@@ -171,7 +186,8 @@
         }
 
 
-        async function AddPatient() {
+        async function AddPatient() 
+        {
             const path = `/api/Patients/${patientModel.patientId}`;
             let response = await axios.put(path, patientModel);
             patientModel.patient = response.data;
@@ -180,15 +196,20 @@
         }
 
 
-        async function GetAilments() {
-            let response = await axios.get(`/api/Patient/`);
+        async function GetAilments()
+        {
+            let response = await axios.get(`/api/Ailments/`);
+            Ailments = response.data;
         }
 
-        async function GetMedication() {
-            let response = await axios.get(`/api/Patient/`);
+        async function GetMedications() 
+        {
+            let response = await axios.get(`/api/Medications/`);
+            Medications = response.data;
         }
 
-        async function GetPatients() {
+        async function GetPatients()
+        {
             let response = await axios.get(`/api/Patient/`);
 
         }
