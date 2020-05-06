@@ -148,7 +148,8 @@
 
        async function medicationArray()
         {
-             await GetMedications();
+            await GetMedications();
+            console.log(Medications);
             for (let medication of Medications) {
                 text2 += `<option value="medication">${medication.name}</option >`;
 
@@ -175,13 +176,14 @@
         }
 
         function GoToRegisterNewMedication() {
+            let inputNewMeds;
             document.getElementById("main").innerHTML = `<div class="page">
                                                                 <div class="header"><h3>Register New Medication</h3></div>
                                                                 <label>New Medication</label>
                                                                 <input type="text" id="addNewMedicationTxt"/>
                                                                 <button onclick="RegisterNewMedication(inputNewMeds)">Register New Medication</button>
                                                          </div>`;
-            let inputNewMeds = document.getElementById("addNewMedicationTxt").innerHTML;
+            inputNewMeds = document.getElementById("addNewMedicationTxt").innerHTML;
            
         }
 
