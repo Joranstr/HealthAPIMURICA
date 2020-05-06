@@ -17,6 +17,10 @@
         overflow: hidden;
         /*background-color: #196189;*/
     }
+    label{
+        color: white;
+        font-size: 1rem;
+    }
 
     div.page {
         display: flex;
@@ -113,6 +117,7 @@
                                                                     <button onclick="GoToPatiens()">Go to Patients</button>
                                                                     <button onclick="GetSinglePatient()">Search for Patient</button>
                                                                     <button onclick="GoToRegisterPatient()">Go to Register Patient</button>
+                                                                    <button onclick="GoToRegisterNewMedication()">Registrer new Medication</button>
                                                                 </div>
                                                                 <pre id="preOutput"></pre>
                                                              </div>`;
@@ -131,9 +136,9 @@
                                                             <div id="ShowPatients"></div>` ;
         }
 
-        function ailmentArray() 
+        async function ailmentArray() 
         {
-            GetAilments();
+            await GetAilments();
             for (let Ailment of Ailments) {
                 text += `<option value="ailment">${Ailment.name}</option >`;
 
@@ -141,9 +146,9 @@
             document.getElementById("addAilment").innerHTML = text;
         }
 
-        function medicationArray()
+       async function medicationArray()
         {
-            GetMedications();
+             await GetMedications();
             for (let medication of Medications) {
                 text2 += `<option value="medication">${medication.name}</option >`;
 
@@ -153,6 +158,7 @@
 
         function GoToRegisterPatient()
         {
+           
             document.getElementById("main").innerHTML = `<div class="page">
                                                                     <div class="header"><h3>Patient Registration</h3></div>
                                                                     <label type="text" id="name">Patient name</label>
@@ -171,8 +177,17 @@
         function GoToRegisterNewMedication() {
             document.getElementById("main").innerHTML = `<div class="page">
                                                                 <div class="header"><h3>Register New Medication</h3></div>
-                                                                <label></label>
+                                                                <label>New Medication</label>
+                                                                <input type="text" id="addNewMedicationTxt"/>
+                                                                <button onclick="RegisterNewMedication(inputNewMeds)">Register New Medication</button>
                                                          </div>`;
+            let inputNewMeds = document.getElementById("addNewMedicationTxt").innerHTML;
+           
+        }
+
+        function GoToRegisterNewMedication()
+        {
+            Medications = inputNewMeds;    // her må vi gjøre endringer for å ta in informasjon fra inputfeltet 
         }
 
         function RegisterPatient()
@@ -181,7 +196,6 @@
             patientModel.patient = document.getElementById("addPatientName").innerHTML;
             patientModel.ailment = document.getElementById("addAilment").innerHTML;
             patientModel.medication = document.getElementById("addMedisin").innerHTML;
-
             AddPatient();
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HealthAPI.ViewModel;
+using HealthCore.Domain.Model;
 using HealthSQLDB.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,5 +31,16 @@ namespace HealthAPI.Controllers
                
             return Ailments.Select(a => new AilmentViewModel{Id = a.Id, Name=a.Name }).ToList();
         }
+
+        [HttpPost]
+        public async Task<ActionResult<List<AilmentViewModel>>> RegisterNewAilment( Ailment ailment)
+        {
+
+            _context.Ailments.Add(ailment);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetAilment", new { id = ailment.Id }, ailment);
+        }
     }
+    
 }
