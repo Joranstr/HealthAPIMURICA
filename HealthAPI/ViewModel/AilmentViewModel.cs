@@ -1,15 +1,16 @@
-﻿using System;
+﻿using HealthCore.Domain.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HealthAPI.ViewModel
 {
-    public class MedicationVeiwModel
+    public class AilmentViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Doses { get; set; }
-
+        
+       
     }
 }
