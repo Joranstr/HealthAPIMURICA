@@ -102,7 +102,7 @@
     </div>
     <iframe width="560" height="315" style="visibility: hidden" src="https://www.youtube.com/embed/U1mlCPMYtPk?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     <script>
-        let patientModel = { patient: null, ailment: null, medication: null };
+        let patientModel = { name: "", ailment: [], medication: [] };
         let Ailments = [];
         let Medications = [];
         let addMedisin = "Medication";
@@ -140,95 +140,106 @@
         {
             await GetAilments();
             for (let Ailment of Ailments) {
-                text += `<option value="ailment">${Ailment.name}</option >`;
+                text += `<option value="${Ailment.name}">${Ailment.name}</option >`;
 
             }
             document.getElementById("addAilment").innerHTML = text;
         }
 
        async function medicationArray()
-        {
-            await GetMedications();
-            console.log(Medications);
-            for (let medication of Medications) {
-                text2 += `<option value="medication">${medication.name}</option >`;
+       {
+           await GetMedications();
+           console.log(Medications);
+           for (let medication of Medications) {
+               text2 += `<option value="${medication.name}">${medication.name}</option >`;
 
+           }
+           document.getElementById("addMedisin").innerHTML = text2;
+       }
+
+       function GoToRegisterPatient() {
+           document.getElementById("main").innerHTML = `<div class="page">
+                                                                   <div class="header"><h3>Patient Registration</h3></div>
+                                                                   <label type="text" id="name">Patient name</label>
+                                                                   <input id ="addPatientName" type="text"/>
+                                                                   <label id="ailment">Ailment</label>
+                                                                   <select id="addAilment">${text}</select>
+                                                                   <label id="medication">Medisin</label>
+                                                                   <select id="addMedisin">${text2}</select>
+                                                                   <input type="submit" id="addPatient" onclick="GetValueFromInput()" value="Add Patient"/>
+                                                                   <button onclick="GoToPatiens()">Go to Patients</button>
+                                                            </div>`;
+           medicationArray();
+           ailmentArray();
+           
+       }
+        function GetValueFromInput()
+        {
+            var inputVal = document.getElementById("addAilment").value;
+            var inputValOne = document.getElementById("addMedisin").value;
+            console.log(inputValOne);
+           var inputValTwo = document.getElementById("addPatientName").value;
+          
+           if(inputValTwo != "") {
+               patientModel.name = inputValTwo;
+               patientModel.ailment = inputVal;
+               patientModel.medication = inputValOne;
+               AddPatient(patientModel);
             }
-            document.getElementById("addMedisin").innerHTML = text2;
+
         }
 
-        function GoToRegisterPatient()
-        {
+       function GoToRegisterNewMedication() {
+           let inputNewMeds;
+           document.getElementById("main").innerHTML = `<div class="page">
+                                                               <div class="header"><h3>Register New Medication</h3></div>
+                                                               <label>New Medication</label>
+                                                               <input type="text" id="addNewMedicationTxt"/>
+                                                               <button onclick="RegisterNewMedication(inputNewMeds)">Register New Medication</button>
+                                                        </div>`;
+           inputNewMeds = document.getElementById("addNewMedicationTxt").innerHTML;
+          
+       }
+
+       function GoToRegisterNewMedication()
+       {
+           Medications = inputNewMeds;    // her må vi gjøre endringer for å ta in informasjon fra inputfeltet 
+       }
+
+       function RegisterPatient()
+       {
+
            
-            document.getElementById("main").innerHTML = `<div class="page">
-                                                                    <div class="header"><h3>Patient Registration</h3></div>
-                                                                    <label type="text" id="name">Patient name</label>
-                                                                    <input id ="addPatientName" type="text"/>
-                                                                    <label id="ailment">Ailment</label>
-                                                                    <select id="addAilment">${text}</select>
-                                                                    <label id="medication">Medisin</label>
-                                                                    <select id="addMedisin">${text2}</select>
-                                                                    <input type="submit" id="addPatient" onclick="RegisterPatient()" value="Add Patient"/>
-                                                                    <button onclick="GoToPatiens()">Go to Patients</button>
-                                                             </div>`;
-            medicationArray();
-            ailmentArray();
-        }
-
-        function GoToRegisterNewMedication() {
-            let inputNewMeds;
-            document.getElementById("main").innerHTML = `<div class="page">
-                                                                <div class="header"><h3>Register New Medication</h3></div>
-                                                                <label>New Medication</label>
-                                                                <input type="text" id="addNewMedicationTxt"/>
-                                                                <button onclick="RegisterNewMedication(inputNewMeds)">Register New Medication</button>
-                                                         </div>`;
-            inputNewMeds = document.getElementById("addNewMedicationTxt").innerHTML;
-           
-        }
-
-        function GoToRegisterNewMedication()
-        {
-            Medications = inputNewMeds;    // her må vi gjøre endringer for å ta in informasjon fra inputfeltet 
-        }
-
-        function RegisterPatient()
-        {
-
-            patientModel.patient = document.getElementById("addPatientName").innerHTML;
-            patientModel.ailment = document.getElementById("addAilment").innerHTML;
-            patientModel.medication = document.getElementById("addMedisin").innerHTML;
-            AddPatient();
-        }
+       }
 
 
-        async function AddPatient() 
-        {
-            const path = `/api/Patients/${patientModel.patientId}`;
-            let response = await axios.put(path, patientModel);
-            patientModel.patient = response.data;
+       async function AddPatient(patientModel) 
+       {
+           const path = `/api/Patients/${patientModel.patientId}`;
+           let response = await axios.put(path, patientModel);
+           patientModel = response.data;
 
-            //show();
-        }
+           //show();
+       }
 
 
-        async function GetAilments()
-        {
-            let response = await axios.get(`/api/Ailments/`);
-            Ailments = response.data;
-        }
+       async function GetAilments()
+       {
+           let response = await axios.get(`/api/Ailments/`);
+           Ailments = response.data;
+       }
 
-        async function GetMedications() 
-        {
-            let response = await axios.get(`/api/Medications/`);
-            Medications = response.data;
-        }
+       async function GetMedications() 
+       {
+           let response = await axios.get(`/api/Medications/`);
+           Medications = response.data;
+       }
 
-        async function GetPatients()
-        {
-            let response = await axios.get(`/api/Patient/`);
+       async function GetPatients()
+       {
+           let response = await axios.get(`/api/Patient/`);
 
-        }
+       }
         //async function test() {
 
         //    var a = await axios.get("https://localhost:44331/api/patients");
