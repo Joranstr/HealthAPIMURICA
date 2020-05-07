@@ -92,12 +92,15 @@ namespace HealthAPI.Controllers
             // To protect from overposting attacks, enable the specific properties you want to bind to, for
             // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
             [HttpPost]
-            public async Task<ActionResult<Patient>> PostPatient(Patient patient)
+            public async Task<ActionResult<PatientViewModel>> PostPatient(PatientViewModel patient)
             {
-                _context.Patients.Add(patient);
+                //var patient = new PatientViewModel(new Patient());
+                var newPatient = patient.ConvertToPatient();
+                _context.Patients.Add(newPatient);
                 await _context.SaveChangesAsync();
-
-                return CreatedAtAction("GetPatient", new { id = patient.PatientId }, patient);
+                
+                return new PatientViewModel(newPatient); 
+                //CreatedAtAction("GetPatient", new { id = patient.PatientId }, patient);
             }
 
             // DELETE: api/Patients/5

@@ -7,35 +7,35 @@
     <!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
-    body {
-        padding: 0;
-        margin: 0;
-        height: 100vh;
-        /*width: 100vw;*/
-        background-image: url(https://i2.wp.com/wallpapersfortech.com/wp-content/uploads/2018/04/72D1C712-266F-4CEA-B20D-043152A998F6.jpeg?ssl=1);
-        background-repeat: no-repeat;
-        overflow: hidden;
-        /*background-color: #196189;*/
-    }
-    label{
-        color: white;
-        font-size: 1rem;
-    }
+        body {
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            /*width: 100vw;*/
+            background-image: url(https://i2.wp.com/wallpapersfortech.com/wp-content/uploads/2018/04/72D1C712-266F-4CEA-B20D-043152A998F6.jpeg?ssl=1);
+            background-repeat: no-repeat;
+            overflow: hidden;
+            /*background-color: #196189;*/
+        }
 
-    div.page {
-        display: flex;
-        height: 100vh;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        user-select: none;
-    }
+        label {
+            color: white;
+            font-size: 1rem;
+        }
+
+        div.page {
+            display: flex;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
 
         div.header {
             color: white;
             font-size: 4rem;
             font-family: 'Rubik', sans-serif;
-            
             text-shadow: 2px 2px #644C30;
             -webkit-text-stroke-color: black;
             -webkit-text-stroke-width: 2px;
@@ -75,7 +75,6 @@
         button {
             /*background: none;*/
             background-color: rgba(013,027,049,0.4);
-            
             font-family: 'Rubik', sans-serif;
             color: white;
             border: none;
@@ -102,7 +101,7 @@
     </div>
     <iframe width="560" height="315" style="visibility: hidden" src="https://www.youtube.com/embed/U1mlCPMYtPk?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     <script>
-        let patientModel = { name: "", ailment: [], medication: [] };
+        let patientModel = { name: "", ailments: [], medications: [] };
         let Ailments = [];
         let Medications = [];
         let addMedisin = "Medication";
@@ -136,7 +135,7 @@
                                                             <div id="ShowPatients"></div>` ;
         }
 
-        async function ailmentArray() 
+        async function ailmentArray()
         {
             await GetAilments();
             for (let Ailment of Ailments) {
@@ -171,23 +170,23 @@
                                                             </div>`;
            medicationArray();
            ailmentArray();
-           
        }
-        function GetValueFromInput()
-        {
-            var inputVal = document.getElementById("addAilment").value;
-            var inputValOne = document.getElementById("addMedisin").value;
-            console.log(inputValOne);
-           var inputValTwo = document.getElementById("addPatientName").value;
-          
-           if(inputValTwo != "") {
-               patientModel.name = inputValTwo;
-               patientModel.ailment = inputVal;
-               patientModel.medication = inputValOne;
-               AddPatient(patientModel);
-            }
+       function GetValueFromInput()
+       {
+           var inputVal = document.getElementById("addAilment").value;
+           var inputValOne = document.getElementById("addMedisin").value;
+           console.log(inputValOne);
+          var inputValTwo = document.getElementById("addPatientName").value;
 
-        }
+          if(inputValTwo != "") {
+              patientModel.name = inputValTwo;
+              patientModel.ailments.push(Ailments.find(element => element.name == inputVal));
+              var medication = Medications.find(element => element.name == inputValOne);
+              medication.doses = 1;
+              patientModel.medications.push(medication);
+              AddPatient();
+          }
+       }
 
        function GoToRegisterNewMedication() {
            let inputNewMeds;
@@ -198,26 +197,29 @@
                                                                <button onclick="RegisterNewMedication(inputNewMeds)">Register New Medication</button>
                                                         </div>`;
            inputNewMeds = document.getElementById("addNewMedicationTxt").innerHTML;
-          
+
        }
 
        function GoToRegisterNewMedication()
        {
-           Medications = inputNewMeds;    // her må vi gjøre endringer for å ta in informasjon fra inputfeltet 
+           Medications = inputNewMeds;    // her må vi gjøre endringer for å ta in informasjon fra inputfeltet
        }
 
        function RegisterPatient()
        {
 
-           
+
        }
 
 
-       async function AddPatient(patientModel) 
+       async function AddPatient()
        {
-           const path = `/api/Patients/${patientModel.patientId}`;
-           let response = await axios.put(path, patientModel);
+           console.log(patientModel , " før");
+           const path = `/api/Patients/`;
+           let response = await axios.post(path, patientModel);
            patientModel = response.data;
+           console.log(patientModel);
+
 
            //show();
        }
@@ -229,7 +231,7 @@
            Ailments = response.data;
        }
 
-       async function GetMedications() 
+       async function GetMedications()
        {
            let response = await axios.get(`/api/Medications/`);
            Medications = response.data;
