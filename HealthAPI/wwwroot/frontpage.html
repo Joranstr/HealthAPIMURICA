@@ -170,10 +170,11 @@
         }
 
         async function patientListFunc() {
+            console.log(patientModel.name);
             await GetPatients();
             patientList += `<table id ="patientTable"><tr><th>Patient</th><th>Ailment</th></tr>`;
             for (let patient of patientModel) {
-                patientList += `<tr><td>${patient.name}</td><td>${patient.ailments[0]}</td></tr>`;
+                patientList += `<tr><td>${patient.name}</td><td>${patient.pat}</td></tr>`;
             }
             patientList += "</table>";
             document.getElementById("ShowPatients").innerHTML = patientList;

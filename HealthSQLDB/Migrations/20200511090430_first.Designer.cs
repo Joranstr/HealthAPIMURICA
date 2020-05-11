@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthSQLDB.Migrations
 {
     [DbContext(typeof(HealthContext))]
-    [Migration("20200506115554_first")]
+    [Migration("20200511090430_first")]
     partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
