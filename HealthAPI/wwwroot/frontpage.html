@@ -93,35 +93,35 @@
                 transform: scale(1.1);
                 border-color: #614c2d;
             }
-    #patientTable {
-        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-        color: black;
-    }
 
-        #patientTable td, #patientTable th {
-            border: 1px solid black;
-            padding: 8px;
+        #patientTable {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
             color: black;
         }
 
-        #patientTable tr{
-            background-color: white;
-        }
+            #patientTable td, #patientTable th {
+                border: 1px solid black;
+                padding: 8px;
+                color: black;
+            }
 
-        #patientTable tr:hover {
-            background-color: #ddd;
-        }
+            #patientTable tr {
+                background-color: white;
+            }
 
-        #patientTable th {
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: left;
-            background-color: hotpink;
-            color: white;
-        }
+                #patientTable tr:hover {
+                    background-color: #ddd;
+                }
 
+            #patientTable th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: hotpink;
+                color: white;
+            }
     </style>
 </head>
 <body>
@@ -141,47 +141,55 @@
         Show();
         function Show() {
             document.getElementById("main").innerHTML = `<div class="page">
-                                                                <div class="header"><h3>USA's "New" Health System</h3></div>
-                                                                <div class="buttonGroup">
-                                                                    <button onclick="GotoPatients()">Go to Patients</button>
-                                                                    <button onclick="GetSinglePatient()">Search for Patient</button>
-                                                                    <button onclick="GoToRegisterPatient()">Go to Register Patient</button>
-                                                                    <button onclick="GoToRegisterNewMedication()">Registrer new Medication</button>
-                                                                </div>
-                                                                <pre id="preOutput"></pre>
-                                                             </div>`;
+                                                                            <div class="header"><h3>USA's "New" Health System</h3></div>
+                                                                            <div class="buttonGroup">
+                                                                                <button onclick="GotoPatients()">Go to Patients</button>
+                                                                                <button onclick="GetSinglePatient()">Search for Patient</button>
+                                                                                <button onclick="GoToRegisterPatient()">Go to Register Patient</button>
+                                                                                <button onclick="GoToRegisterNewMedication()">Registrer new Medication</button>
+                                                                            </div>
+                                                                            <pre id="preOutput"></pre>
+                                                                         </div>`;
         }
 
-        function GetSinglePatient()
-        {
+        function GetSinglePatient() {
             document.getElementById("main").innerHTML = "";
         }
 
-        function GotoPatients()
-        {
+        function GotoPatients() {
             //denne skal viste pasienter.
             GetPatients();
             document.getElementById("main").innerHTML = `<div class="page">
-                                                            <div class="header"><h3>All patiens</h3></div>
-                                                            <div id="ShowPatients">${patientList}</div>
-                                                            <button onclick="GoToRegisterPatient()"></button>
-                                                         </div>` ;
+                                                                        <div class="header"><h3>All patiens</h3></div>
+                                                                        <div id="ShowPatients">${patientList}</div>
+                                                                        <button onclick="GoToRegisterPatient()"></button>
+                                                                     </div>` ;
             patientListFunc();
         }
 
         async function patientListFunc() {
-            console.log(patientModel.name);
             await GetPatients();
-            patientList += `<table id ="patientTable"><tr><th>Patient</th><th>Ailment</th></tr>`;
+            patientList += `<table id ="patientTable"><tr><th>Patient</th><th>Ailment</th><th>Medication></th><th>Doses</th></tr>`;
+            let p = patientModel.name;
             for (let patient of patientModel) {
-                patientList += `<tr><td>${patient.name}</td><td>${patient.pat}</td></tr>`;
+                var i = patient.id;
+                console.log(patient.medications[patient.medications.length - 1]);
+                patientList += `<tr><td>${patient.name}</td>`;
+
+
+                patientList += `<td>${patient.ailments[patient.ailments.length - 1].name}</td>`;
+                for (medication of patient.medications) {
+
+                    patientList += `<td>${medication.name}</td></tr>`;
+                }
+                //patientList += `<td>${patient.medications[patient.medications.length -1]}</td></tr>`patient.medications[patient.medications.length - 1]};
+
             }
             patientList += "</table>";
             document.getElementById("ShowPatients").innerHTML = patientList;
         }
 
-        async function ailmentArray()
-        {
+        async function ailmentArray() {
             await GetAilments();
             for (let Ailment of Ailments) {
                 text += `<option value="${Ailment.name}">${Ailment.name}</option >`;
@@ -190,133 +198,125 @@
             document.getElementById("addAilment").innerHTML = text;
         }
 
-       async function medicationArray()
-       {
-           await GetMedications();
-           console.log(Medications);
-           for (let medication of Medications) {
-               text2 += `<option value="${medication.name}">${medication.name}</option >`;
+        async function medicationArray() {
+            await GetMedications();
+            console.log(Medications);
+            for (let medication of Medications) {
+                text2 += `<option value="${medication.name}">${medication.name}</option >`;
 
-           }
-           document.getElementById("addMedisin").innerHTML = text2;
-       }
-
-       function GoToRegisterPatient() {
-           document.getElementById("main").innerHTML = `<div class="page">
-                                                                   <div class="header"><h3>Patient Registration</h3></div>
-                                                                   <label type="text" id="name">Patient name</label>
-                                                                   <input id ="addPatientName" type="text"/>
-                                                                   <label id="ailment">Ailment</label>
-                                                                   <select id="addAilment">${text}</select>
-                                                                   <label id="medication">Medisin</label>
-                                                                   <select id="addMedisin">${text2}</select>
-                                                                   <input type="submit" id="addPatient" onclick="GetValueFromInput()" value="Add Patient"/>
-                                                                   <button onclick="GoToPatiens()">Go to Patients</button>
-                                                            </div>`;
-           medicationArray();
-           ailmentArray();
+            }
+            document.getElementById("addMedisin").innerHTML = text2;
         }
 
-       
-       function GetValueFromInput()
-       {
-           var inputVal = document.getElementById("addAilment").value;
-           var inputValOne = document.getElementById("addMedisin").value;
-           console.log(inputValOne);
-          var inputValTwo = document.getElementById("addPatientName").value;
-
-          if(inputValTwo != "") {
-              patientModel.name = inputValTwo;
-              patientModel.ailments.push(Ailments.find(element => element.name == inputVal));
-              var medication = Medications.find(element => element.name == inputValOne);
-              medication.doses = 1;
-              patientModel.medications.push(medication);
-              AddPatient();
-          }
-       }
-
-       function GoToRegisterNewMedication() {
-           let inputNewMeds;
-           document.getElementById("main").innerHTML = `<div class="page">
-                                                               <div class="header"><h3>Register New Medication</h3></div>
-                                                               <label>New Medication</label>
-                                                               <input type="text" id="addNewMedicationTxt"/>
-                                                               <button onclick="RegisterNewMedication(inputNewMeds)">Register New Medication</button>
-                                                        </div>`;
-           inputNewMeds = document.getElementById("addNewMedicationTxt").innerHTML;
-
-       }
-
-       function GoToRegisterNewMedication()
-       {
-           Medications = inputNewMeds;    // her må vi gjøre endringer for å ta in informasjon fra inputfeltet
-       }
-
-       function RegisterPatient()
-       {
+        function GoToRegisterPatient() {
+            document.getElementById("main").innerHTML = `<div class="page">
+                                                                               <div class="header"><h3>Patient Registration</h3></div>
+                                                                               <label type="text" id="name">Patient name</label>
+                                                                               <input id ="addPatientName" type="text"/>
+                                                                               <label id="ailment">Ailment</label>
+                                                                               <select id="addAilment">${text}</select>
+                                                                               <label id="medication">Medisin</label>
+                                                                               <select id="addMedisin">${text2}</select>
+                                                                               <input type="submit" id="addPatient" onclick="GetValueFromInput()" value="Add Patient"/>
+                                                                               <button onclick="GoToPatiens()">Go to Patients</button>
+                                                                        </div>`;
+            medicationArray();
+            ailmentArray();
+        }
 
 
-       }
+        function GetValueFromInput() {
+            var inputVal = document.getElementById("addAilment").value;
+            var inputValOne = document.getElementById("addMedisin").value;
+            console.log(inputValOne);
+            var inputValTwo = document.getElementById("addPatientName").value;
+
+            if (inputValTwo != "") {
+                patientModel.name = inputValTwo;
+                patientModel.ailments.push(Ailments.find(element => element.name == inputVal));
+                var medication = Medications.find(element => element.name == inputValOne);
+                medication.doses = 1;
+                patientModel.medications.push(medication);
+                AddPatient();
+            }
+        }
+
+        function GoToRegisterNewMedication() {
+            let inputNewMeds;
+            document.getElementById("main").innerHTML = `<div class="page">
+                                                                           <div class="header"><h3>Register New Medication</h3></div>
+                                                                           <label>New Medication</label>
+                                                                           <input type="text" id="addNewMedicationTxt"/>
+                                                                           <button onclick="RegisterNewMedication(inputNewMeds)">Register New Medication</button>
+                                                                    </div>`;
+            inputNewMeds = document.getElementById("addNewMedicationTxt").innerHTML;
+
+        }
+
+        function GoToRegisterNewMedication() {
+            Medications = inputNewMeds;    // her må vi gjøre endringer for å ta in informasjon fra inputfeltet
+        }
+
+        function RegisterPatient() {
 
 
-       async function AddPatient()
-       {
-           console.log(patientModel , " før");
-           const path = `/api/Patients/`;
-           let response = await axios.post(path, patientModel);
-           patientModel = response.data;
-           console.log(patientModel);
+        }
 
 
-           //show();
-       }
+        async function AddPatient() {
+            console.log(patientModel, " før");
+            const path = `/api/Patients/`;
+            let response = await axios.post(path, patientModel);
+            patientModel = response.data;
+            console.log(patientModel);
 
 
-       async function GetAilments()
-       {
-           let response = await axios.get(`/api/Ailments/`);
-           Ailments = response.data;
-       }
-
-       async function GetMedications()
-       {
-           let response = await axios.get(`/api/Medications/`);
-           Medications = response.data;
-       }
-
-       async function GetPatients()
-       {
-           let response = await axios.get(`/api/Patients/`);
-           patientModel = response.data;
-
-       }
-        //async function test() {
-
-        //    var a = await axios.get("https://localhost:44331/api/patients");
-
-        //    for (let person of a.data) {
-        //        document.getElementById("preOutput").innerText += JSON.stringify(person) + "\n";
-        //        console.log(person);
-        //    }
-        //    //document.getElementById("preOutput").innerText = JSON.stringify(a.data);
-        //console.log(a.data);
-        //}
+            //show();
+        }
 
 
-        //dette er jquery kode
-        //$(function() {
-        //    var getPatients = function() {
-        //        var url = "https://localhost:44331/api/patients";
-        //        $.get(url).always(showResponse);
-        //        return false;
-        //    };
+        async function GetAilments() {
+            let response = await axios.get(`/api/Ailments/`);
+            Ailments = response.data;
+        }
 
-        //    var showResponse = function(object) {
-        //        $("#preOutput").text(JSON.stringify(object, null, 4));
-        //    };
+        async function GetMedications() {
+            let response = await axios.get(`/api/Medications/`);
+            Medications = response.data;
+        }
 
-        //    $("#btnGetPatients").click(getPatients);
-        //});
+        async function GetPatients() {
+            let response = await axios.get(`/api/Patients/`);
+            patientModel = response.data;
+
+        }
+                    //async function test() {
+
+                    //    var a = await axios.get("https://localhost:44331/api/patients");
+
+                    //    for (let person of a.data) {
+                    //        document.getElementById("preOutput").innerText += JSON.stringify(person) + "\n";
+                    //        console.log(person);
+                    //    }
+                    //    //document.getElementById("preOutput").innerText = JSON.stringify(a.data);
+                    //console.log(a.data);
+                    //}
+
+
+                    //dette er jquery kode
+                    //$(function() {
+                    //    var getPatients = function() {
+                    //        var url = "https://localhost:44331/api/patients";
+                    //        $.get(url).always(showResponse);
+                    //        return false;
+                    //    };
+
+                    //    var showResponse = function(object) {
+                    //        $("#preOutput").text(JSON.stringify(object, null, 4));
+                    //    };
+
+                    //    $("#btnGetPatients").click(getPatients);
+                    //});
 
 
 

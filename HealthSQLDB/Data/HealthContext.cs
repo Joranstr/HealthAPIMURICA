@@ -37,13 +37,14 @@ namespace HealthSQLDB.Data
                 .HasForeignKey(pm => pm.MedicationId);
 
             modelBuilder.Entity<Ailment>()
-                .HasData(new Ailment { Id = 1 , Name = "Covid-19" }, new Ailment { Id = 2, Name = "Manflu" } );
+                .HasData(new Ailment { Id = 1 , Name = "Covid-19" }, new Ailment { Id = 2, Name = "Manflu" }, 
+                    new Ailment{ Id = 3, Name = "Broken bone"}, new Ailment{ Id = 4, Name = "tyfus"}, new Ailment{Id=5, Name = "Stubed Tow"}, new Ailment{ Id = 6, Name = "Depression" });
             modelBuilder.Entity<Patient>()
                 .HasData(new Patient {PatientId = 1,  Name = "Ola Nordmann" });
             modelBuilder.Entity<PatientAilments>()
                 .HasData(new PatientAilments { AilmentId = 1, PatientId = 1 });
             modelBuilder.Entity<Medication>()
-               .HasData(new Medication { Id = 1, Name = "Man up" }, new Medication { Id = 2, Name = "No Cure" });
+               .HasData(new Medication { Id = 1, Name = "Man up" }, new Medication { Id = 2, Name = "No Cure" }, new Medication { Id = 3, Name = "Ibux" }, new Medication { Id = 4, Name = "Sunshine" }, new Medication { Id = 5, Name = "Kondoms" }, new Medication { Id = 6, Name = "Scream" });
         }
 
         public DbSet<Ailment> Ailments { get; set; }
