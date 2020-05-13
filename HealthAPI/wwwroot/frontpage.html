@@ -7,8 +7,7 @@
     <!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
-        body
-        {
+        body {
             padding: 0;
             margin: 0;
             height: 100vh;
@@ -19,14 +18,12 @@
             /*background-color: #196189;*/
         }
 
-        label
-        {
+        label {
             color: white;
             font-size: 1rem;
         }
 
-        div.page
-        {
+        div.page {
             display: flex;
             height: 100vh;
             flex-direction: column;
@@ -35,8 +32,7 @@
             user-select: none;
         }
 
-        div.header
-        {
+        div.header {
             color: white;
             font-size: 4rem;
             font-family: 'Rubik', sans-serif;
@@ -45,8 +41,7 @@
             -webkit-text-stroke-width: 2px;
         }
 
-        input[type=text], select 
-        {
+        input[type=text], select {
             width: 30%;
             padding: 12px 20px;
             margin: 8px 0;
@@ -56,8 +51,7 @@
             box-sizing: border-box;
         }
 
-        input[type=submit]
-        {
+        input[type=submit] {
             width: 30%;
             background-color: #276580;
             color: white;
@@ -68,20 +62,17 @@
             cursor: pointer;
         }
 
-            input[type=submit]:hover
-            {
+            input[type=submit]:hover {
                 background-color: #3281a3;
             }
 
-        div.buttonGroup
-        {
+        div.buttonGroup {
             padding-top: 40px;
             display: block;
             padding-bottom: 40px;
         }
 
-        button
-        {
+        button {
             background-color: rgba(013,027,049,0.4);
             font-family: 'Rubik', sans-serif;
             color: white;
@@ -93,47 +84,40 @@
             transition: all 0, 3s ease;
         }
 
-            button:hover
-            {
+            button:hover {
                 cursor: pointer;
                 transform: scale(1.1);
                 border-color: #614c2d;
             }
 
-        #patientTable
-        {
+        #patientTable {
             font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
             border-collapse: collapse;
             width: 100%;
             color: black;
         }
 
-            #patientTable td, #patientTable th
-            {
+            #patientTable td, #patientTable th {
                 border: 1px solid black;
                 padding: 8px;
                 color: black;
             }
 
-            #patientTable tr
-            {
+            #patientTable tr {
                 background-color: white;
             }
 
-                #patientTable tr:hover
-                {
+                #patientTable tr:hover {
                     background-color: #ddd;
                 }
 
-            #patientTable th
-            {
+            #patientTable th {
                 padding-top: 12px;
                 padding-bottom: 12px;
                 text-align: left;
                 background-color: hotpink;
                 color: white;
             }
-        
     </style>
 </head>
 <body>
@@ -155,63 +139,78 @@
         Show();
         function Show() {
             document.getElementById("main").innerHTML = `<div class="page">
-                                                            <div class="header"><h3>USA's "New" Health System</h3></div>
-                                                            <div class="buttonGroup">
-                                                                <button onclick="GotoPatients()">Go to Patients</button>
-                                                                <button onclick="GetSinglePatient()">Search for Patient</button>
-                                                                <button onclick="GoToRegisterPatient()">Go to Register Patient</button>
-                                                                <button onclick="GoToRegisterNewMedication()">Registrer new Medication</button>
-                                                            </div>
-                                                            <pre id="preOutput"></pre>
-                                                         </div>`;
+                                                                        <div class="header"><h3>USA's "New" Health System</h3></div>
+                                                                        <div class="buttonGroup">
+                                                                            <button onclick="GotoPatients()">Go to Patients</button>
+                                                                            <button onclick="GetSinglePatient()">Search for Patient</button>
+                                                                            <button onclick="GoToRegisterPatient()">Go to Register Patient</button>
+                                                                            <button onclick="GoToRegisterNewMedication()">Registrer new Medication</button>
+                                                                        </div>
+                                                                        <pre id="preOutput"></pre>
+                                                                     </div>`;
         }
         //----------------------------------------------------search for patient------------------------------------------------------------------------------------------------------------
         function GetSinglePatient() {
             GetPatients();
             document.getElementById("main").innerHTML = `<div class="page">
-                                                                <div class="header"><h3>Search for patient</h3></div>
-                                                                <input type="text" id="searchBox" placeholder="Search for Patient" onkeyup="MakeSearchForPatient()" title="Type in name of patient"/>
-                                                                <div id="searchResult"></div>
-                                                         </div>`;
+                                                                            <div class="header"><h3>Search for patient</h3></div>
+                                                                            <input type="text" id="searchBox" placeholder="Search for Patient" onkeyup="MakeSearchForPatient()" title="Type in name of patient"/>
+                                                                            <div id="searchResult"></div>
+                                                                     </div>`;
+        }
+        var ages = [32, 33, 16, 40];
+
+        function checkAdult(age) {
+            return age >= 18;
         }
 
-        function UpdateSearchResult(patient) {
-            document.getElementById("searchBox").innerHTML = searchPatientList + "</table>";
+        function myFunction() {
+            let tabell = patient.name.includes(filter1[index]);
+            if (tabell) {
+                searchPatientList += `<tr><td class="tableDiv">${patient.name}</td></tr>`;
+            }
+            //document.getElementById("searchResult").innerHTML = ages.filter(checkAdult);
         }
+
 
         async function MakeSearchForPatient() {
+            document.getElementById("searchResult").innerHTML = "";
             await GetPatients();
             searchPatientList = `<table id="patientTable"><tr><th>Patient Name</th></tr>`;
-            //var input = document.getElementById("myInput");
-            let p = patientModel.name;
             let txtValue = document.getElementById('searchBox');
-            let td = document.getElementsByTagName("tableDiv");
-            var filter = txtValue.value.toUpperCase();
+            var filter1 = txtValue.value.toUpperCase();
+            let filterIndex = filter1.indexOf(filter1);
+            //console.log(txtValue, filter1, filterIndex);
             for (let patient of patientModel) {
-                var i = patient.id;
-                if (txtValue.value.toUpperCase().indexOf(filter) > -1) {
-                    //td[i - 1].style.display = "";
-                    //console.log(patient.medications[patient.medications.length - 1]);
-                    searchPatientList += `<tr><td class="tableDiv">${patient.name}</td></tr>`;
-                    document.getElementById("searchResult").innerHTML = searchPatientList;
-                    UpdateSearchResult(patient);
-                    //} else {
-                    //td[i - 1].style.display = "none";
-                    //}
+                if (filterIndex > -1) {
+
+                    //filter1.forEach(myFunction());
+
+                    for (let index in filter1) {
+
+                        let tabell = patient.name.includes(filter1[index]);
+
+                        //if (tabell) {
+                        //    searchPatientList += `<tr><td class="tableDiv">${patient.name}</td></tr>`;
+                        //}
+                        searchPatientList += `<tr><td class="tableDiv">${patient.name}</td></tr>`;
+                    }
+
                 }
             }
-            var filetermetode = txtValue.filter(function (noe) { return stringnoe.include(noe) });
-            document.getElementById("searchResult").innerHTML = stringnoe;
-            console.log(filetermetode);
+            //document.getElementById("searchResult").innerHTML = patient.name.filter(filter1.indexOf(filter1)) + "</table>";
+            document.getElementById("searchResult").innerHTML += searchPatientList + "</table>";
+
         }
-
-        function DisplayPatient(patientName)
-        {
-                let pa = patientModel.name;
-            for (let patient of patientModel) {
-
-            }
-         
+        async function hentUtPasienter(patient) {
+            $(document).ready(function () {
+                $("#searchBox").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    $("#patientTable tr").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });
         }
 
         //---------------------------------------------------see all patient-----------------------------------------------------------------------------------------------------------------------------
@@ -219,10 +218,10 @@
             //denne skal viste pasienter.
             GetPatients();
             document.getElementById("main").innerHTML = `<div class="page">
-                                                            <div class="header"><h3>All patiens</h3></div>
-                                                            <div id="ShowPatients">${patientList}</div>
-                                                            <button onclick="GoToRegisterPatient()"></button>
-                                                         </div>` ;
+                                                                        <div class="header"><h3>All patiens</h3></div>
+                                                                        <div id="ShowPatients">${patientList}</div>
+                                                                        <button onclick="GoToRegisterPatient()"></button>
+                                                                     </div>` ;
             patientListFunc();
         }
 
@@ -269,16 +268,16 @@
         //---------------------------------------------------------------------Register Patient--------------------------------------------------------------------------------------------------------------
         function GoToRegisterPatient() {
             document.getElementById("main").innerHTML = `<div class="page">
-                                                                <div class="header"><h3>Patient Registration</h3></div>
-                                                                <label type="text" id="name">Patient name</label>
-                                                                <input id ="addPatientName" type="text"/>
-                                                                <label id="ailment">Ailment</label>
-                                                                <select id="addAilment">${text}</select>
-                                                                <label id="medication">Medisin</label>
-                                                                <select id="addMedisin">${text2}</select>
-                                                                <input type="submit" id="addPatient" onclick="GetValueFromInput()" value="Add Patient"/>
-                                                                <button onclick="GoToPatiens()">Go to Patients</button>
-                                                         </div>`;
+                                                                            <div class="header"><h3>Patient Registration</h3></div>
+                                                                            <label type="text" id="name">Patient name</label>
+                                                                            <input id ="addPatientName" type="text"/>
+                                                                            <label id="ailment">Ailment</label>
+                                                                            <select id="addAilment">${text}</select>
+                                                                            <label id="medication">Medisin</label>
+                                                                            <select id="addMedisin">${text2}</select>
+                                                                            <input type="submit" id="addPatient" onclick="GetValueFromInput()" value="Add Patient"/>
+                                                                            <button onclick="GoToPatiens()">Go to Patients</button>
+                                                                     </div>`;
             medicationArray();
             ailmentArray();
         }
@@ -326,11 +325,11 @@
             patientModel = response.data;
         }
 
-        //async function GetPatientByName() {
-        //    let response = await axios.get(`/api/patients/name/${patientName}`);
-        //    patientByName = response.data;
-        //    DisplayPatient(patientName);
-        //}
+                    //async function GetPatientByName() {
+                    //    let response = await axios.get(`/api/patients/name/${patientName}`);
+                    //    patientByName = response.data;
+                    //    DisplayPatient(patientName);
+                    //}
     </script>
 </body>
 </html>
