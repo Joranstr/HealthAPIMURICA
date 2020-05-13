@@ -7,7 +7,8 @@
     <!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
-        body {
+        body
+        {
             padding: 0;
             margin: 0;
             height: 100vh;
@@ -18,12 +19,14 @@
             /*background-color: #196189;*/
         }
 
-        label {
+        label
+        {
             color: white;
             font-size: 1rem;
         }
 
-        div.page {
+        div.page
+        {
             display: flex;
             height: 100vh;
             flex-direction: column;
@@ -32,7 +35,8 @@
             user-select: none;
         }
 
-        div.header {
+        div.header
+        {
             color: white;
             font-size: 4rem;
             font-family: 'Rubik', sans-serif;
@@ -41,7 +45,8 @@
             -webkit-text-stroke-width: 2px;
         }
 
-        input[type=text], select {
+        input[type=text], select 
+        {
             width: 30%;
             padding: 12px 20px;
             margin: 8px 0;
@@ -51,7 +56,8 @@
             box-sizing: border-box;
         }
 
-        input[type=submit] {
+        input[type=submit]
+        {
             width: 30%;
             background-color: #276580;
             color: white;
@@ -62,18 +68,20 @@
             cursor: pointer;
         }
 
-            input[type=submit]:hover {
+            input[type=submit]:hover
+            {
                 background-color: #3281a3;
             }
 
-        div.buttonGroup {
+        div.buttonGroup
+        {
             padding-top: 40px;
             display: block;
             padding-bottom: 40px;
         }
 
-        button {
-            /*background: none;*/
+        button
+        {
             background-color: rgba(013,027,049,0.4);
             font-family: 'Rubik', sans-serif;
             color: white;
@@ -83,60 +91,49 @@
             border-bottom: 3px groove red;
             margin: 0px 20px;
             transition: all 0, 3s ease;
-            /*transform: scale(1.3);*/
-            /*-webkit-text-stroke-color: #ffd700;
-            -webkit-text-stroke-width: 0.5px;*/
         }
 
-            button:hover {
+            button:hover
+            {
                 cursor: pointer;
                 transform: scale(1.1);
                 border-color: #614c2d;
             }
 
-        #patientTable {
+        #patientTable
+        {
             font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
             border-collapse: collapse;
             width: 100%;
             color: black;
         }
 
-            #patientTable td, #patientTable th {
+            #patientTable td, #patientTable th
+            {
                 border: 1px solid black;
                 padding: 8px;
                 color: black;
             }
 
-            #patientTable tr {
+            #patientTable tr
+            {
                 background-color: white;
             }
 
-                #patientTable tr:hover {
+                #patientTable tr:hover
+                {
                     background-color: #ddd;
                 }
 
-            #patientTable th {
+            #patientTable th
+            {
                 padding-top: 12px;
                 padding-bottom: 12px;
                 text-align: left;
                 background-color: hotpink;
                 color: white;
             }
-
-        /*Input {
-            width: 100%;
-            font-size: 16px;
-            padding: 12px 20px 12px 40px;
-            border: 1px solid #ddd;
-            margin-bottom: 12px;
-        }
-
-        .myUL {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
+        
     </style>
 </head>
 <body>
@@ -153,28 +150,29 @@
         let text2 = "";
         let patientList = "";
         let searchPatientList = "";
+        let patientName = "";
         //----------------------------------------------------------------front page---------------------------------------------------------------------------------------------------------
         Show();
         function Show() {
             document.getElementById("main").innerHTML = `<div class="page">
-                                                                                                    <div class="header"><h3>USA's "New" Health System</h3></div>
-                                                                                                    <div class="buttonGroup">
-                                                                                                        <button onclick="GotoPatients()">Go to Patients</button>
-                                                                                                        <button onclick="GetSinglePatient()">Search for Patient</button>
-                                                                                                        <button onclick="GoToRegisterPatient()">Go to Register Patient</button>
-                                                                                                        <button onclick="GoToRegisterNewMedication()">Registrer new Medication</button>
-                                                                                                    </div>
-                                                                                                    <pre id="preOutput"></pre>
-                                                                                                 </div>`;
+                                                            <div class="header"><h3>USA's "New" Health System</h3></div>
+                                                            <div class="buttonGroup">
+                                                                <button onclick="GotoPatients()">Go to Patients</button>
+                                                                <button onclick="GetSinglePatient()">Search for Patient</button>
+                                                                <button onclick="GoToRegisterPatient()">Go to Register Patient</button>
+                                                                <button onclick="GoToRegisterNewMedication()">Registrer new Medication</button>
+                                                            </div>
+                                                            <pre id="preOutput"></pre>
+                                                         </div>`;
         }
         //----------------------------------------------------search for patient------------------------------------------------------------------------------------------------------------
         function GetSinglePatient() {
             GetPatients();
             document.getElementById("main").innerHTML = `<div class="page">
-                                                                                                        <div class="header"><h3>Search for patient</h3></div>
-                                                                                                        <input type="text" id="searchBox" placeholder="Search for Patient" onkeyup="MakeSearchForPatient()" title="Type in name of patient"/>
-                                                                                                        <div id="searchResult"></div>
-                                                                                                 </div>`;
+                                                                <div class="header"><h3>Search for patient</h3></div>
+                                                                <input type="text" id="searchBox" placeholder="Search for Patient" onkeyup="MakeSearchForPatient()" title="Type in name of patient"/>
+                                                                <div id="searchResult"></div>
+                                                         </div>`;
         }
 
         function UpdateSearchResult(patient) {
@@ -202,122 +200,137 @@
                     //}
                 }
             }
-            var filetermetode = txtValue.filter(function(noe) { return stringnoe.include(noe) });
+            var filetermetode = txtValue.filter(function (noe) { return stringnoe.include(noe) });
             document.getElementById("searchResult").innerHTML = stringnoe;
             console.log(filetermetode);
         }
 
+        function DisplayPatient(patientName)
+        {
+                let pa = patientModel.name;
+            for (let patient of patientModel) {
+
+            }
+         
+        }
+
         //---------------------------------------------------see all patient-----------------------------------------------------------------------------------------------------------------------------
-            function GotoPatients() {
-                //denne skal viste pasienter.
-                GetPatients();
-                document.getElementById("main").innerHTML = `<div class="page">
-                                                                                                            <div class="header"><h3>All patiens</h3></div>
-                                                                                                            <div id="ShowPatients">${patientList}</div>
-                                                                                                            <button onclick="GoToRegisterPatient()"></button>
-                                                                                                         </div>` ;
-                patientListFunc();
-            }
+        function GotoPatients() {
+            //denne skal viste pasienter.
+            GetPatients();
+            document.getElementById("main").innerHTML = `<div class="page">
+                                                            <div class="header"><h3>All patiens</h3></div>
+                                                            <div id="ShowPatients">${patientList}</div>
+                                                            <button onclick="GoToRegisterPatient()"></button>
+                                                         </div>` ;
+            patientListFunc();
+        }
 
-            async function patientListFunc() {
-                await GetPatients();
-                patientList += `<table id ="patientTable"><tr><th>Patient</th><th>Ailment</th><th>Medication></th><th>Doses</th></tr>`;
-                let p = patientModel.name;
-                for (let patient of patientModel) {
-                    var i = patient.id;
-                    console.log(patient.medications[patient.medications.length - 1]);
-                    patientList += `<tr><td>${patient.name}</td>`;
+        async function patientListFunc() {
+            await GetPatients();
+            patientList += `<table id ="patientTable"><tr><th>Patient</th><th>Ailment</th><th>Medication></th><th>Doses</th></tr>`;
+            let p = patientModel.name;
+            for (let patient of patientModel) {
+                var i = patient.id;
+                console.log(patient.medications[patient.medications.length - 1]);
+                patientList += `<tr><td>${patient.name}</td>`;
 
 
-                    patientList += `<td>${patient.ailments[patient.ailments.length - 1].name}</td>`;
-                    for (medication of patient.medications) {
+                patientList += `<td>${patient.ailments[patient.ailments.length - 1].name}</td>`;
+                for (medication of patient.medications) {
 
-                        patientList += `<td>${medication.name}</td></tr>`;
-                    }
-                    //patientList += `<td>${patient.medications[patient.medications.length -1]}</td></tr>`patient.medications[patient.medications.length - 1]};
-
+                    patientList += `<td>${medication.name}</td></tr>`;
                 }
-                patientList += "</table>";
-                document.getElementById("ShowPatients").innerHTML = patientList;
+                //patientList += `<td>${patient.medications[patient.medications.length -1]}</td></tr>`patient.medications[patient.medications.length - 1]};
+
             }
+            patientList += "</table>";
+            document.getElementById("ShowPatients").innerHTML = patientList;
+        }
 
-            async function ailmentArray() {
-                await GetAilments();
-                for (let Ailment of Ailments) {
-                    text += `<option value="${Ailment.name}">${Ailment.name}</option >`;
+        async function ailmentArray() {
+            await GetAilments();
+            for (let Ailment of Ailments) {
+                text += `<option value="${Ailment.name}">${Ailment.name}</option >`;
 
-                }
-                document.getElementById("addAilment").innerHTML = text;
             }
+            document.getElementById("addAilment").innerHTML = text;
+        }
 
-            async function medicationArray() {
-                await GetMedications();
-                console.log(Medications);
-                for (let medication of Medications) {
-                    text2 += `<option value="${medication.name}">${medication.name}</option >`;
+        async function medicationArray() {
+            await GetMedications();
+            console.log(Medications);
+            for (let medication of Medications) {
+                text2 += `<option value="${medication.name}">${medication.name}</option >`;
 
-                }
-                document.getElementById("addMedisin").innerHTML = text2;
             }
-            //---------------------------------------------------------------------Register Patient--------------------------------------------------------------------------------------------------------------
-            function GoToRegisterPatient() {
-                document.getElementById("main").innerHTML = `<div class="page">
-                                                                                                                               <div class="header"><h3>Patient Registration</h3></div>
-                                                                                                                               <label type="text" id="name">Patient name</label>
-                                                                                                                               <input id ="addPatientName" type="text"/>
-                                                                                                                               <label id="ailment">Ailment</label>
-                                                                                                                               <select id="addAilment">${text}</select>
-                                                                                                                               <label id="medication">Medisin</label>
-                                                                                                                               <select id="addMedisin">${text2}</select>
-                                                                                                                               <input type="submit" id="addPatient" onclick="GetValueFromInput()" value="Add Patient"/>
-                                                                                                                               <button onclick="GoToPatiens()">Go to Patients</button>
-                                                                                                                        </div>`;
-                medicationArray();
-                ailmentArray();
+            document.getElementById("addMedisin").innerHTML = text2;
+        }
+        //---------------------------------------------------------------------Register Patient--------------------------------------------------------------------------------------------------------------
+        function GoToRegisterPatient() {
+            document.getElementById("main").innerHTML = `<div class="page">
+                                                                <div class="header"><h3>Patient Registration</h3></div>
+                                                                <label type="text" id="name">Patient name</label>
+                                                                <input id ="addPatientName" type="text"/>
+                                                                <label id="ailment">Ailment</label>
+                                                                <select id="addAilment">${text}</select>
+                                                                <label id="medication">Medisin</label>
+                                                                <select id="addMedisin">${text2}</select>
+                                                                <input type="submit" id="addPatient" onclick="GetValueFromInput()" value="Add Patient"/>
+                                                                <button onclick="GoToPatiens()">Go to Patients</button>
+                                                         </div>`;
+            medicationArray();
+            ailmentArray();
+        }
+
+
+        function GetValueFromInput() {
+            var inputVal = document.getElementById("addAilment").value;
+            var inputValOne = document.getElementById("addMedisin").value;
+            console.log(inputValOne);
+            var inputValTwo = document.getElementById("addPatientName").value;
+
+            if (inputValTwo != "") {
+                patientModel.name = inputValTwo;
+                patientModel.ailments.push(Ailments.find(element => element.name == inputVal));
+                var medication = Medications.find(element => element.name == inputValOne);
+                medication.doses = 1;
+                patientModel.medications.push(medication);
+                AddPatient();
+                show();
             }
+        }
+
+        //--------------------------------------------------------------DataBase Kall--------------------------------------------------------------------------------------------------------------------------
+        async function AddPatient() {
+            console.log(patientModel, " før");
+            const path = `/api/Patients/`;
+            let response = await axios.post(path, patientModel);
+            patientModel = response.data;
+            console.log(patientModel);
+        }
 
 
-            function GetValueFromInput() {
-                var inputVal = document.getElementById("addAilment").value;
-                var inputValOne = document.getElementById("addMedisin").value;
-                console.log(inputValOne);
-                var inputValTwo = document.getElementById("addPatientName").value;
+        async function GetAilments() {
+            let response = await axios.get(`/api/Ailments/`);
+            Ailments = response.data;
+        }
 
-                if (inputValTwo != "") {
-                    patientModel.name = inputValTwo;
-                    patientModel.ailments.push(Ailments.find(element => element.name == inputVal));
-                    var medication = Medications.find(element => element.name == inputValOne);
-                    medication.doses = 1;
-                    patientModel.medications.push(medication);
-                    AddPatient();
-                    show();
-                }
-            }
+        async function GetMedications() {
+            let response = await axios.get(`/api/Medications/`);
+            Medications = response.data;
+        }
 
-            //--------------------------------------------------------------DataBase Kall--------------------------------------------------------------------------------------------------------------------------
-            async function AddPatient() {
-                console.log(patientModel, " før");
-                const path = `/api/Patients/`;
-                let response = await axios.post(path, patientModel);
-                patientModel = response.data;
-                console.log(patientModel);
-            }
+        async function GetPatients() {
+            let response = await axios.get(`/api/Patients/`);
+            patientModel = response.data;
+        }
 
-
-            async function GetAilments() {
-                let response = await axios.get(`/api/Ailments/`);
-                Ailments = response.data;
-            }
-
-            async function GetMedications() {
-                let response = await axios.get(`/api/Medications/`);
-                Medications = response.data;
-            }
-
-            async function GetPatients() {
-                let response = await axios.get(`/api/Patients/`);
-                patientModel = response.data;
-            }
+        //async function GetPatientByName() {
+        //    let response = await axios.get(`/api/patients/name/${patientName}`);
+        //    patientByName = response.data;
+        //    DisplayPatient(patientName);
+        //}
     </script>
 </body>
 </html>
