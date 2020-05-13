@@ -181,26 +181,27 @@
             var filter1 = txtValue.value.toUpperCase();
             let filterIndex = filter1.indexOf(filter1);
             //console.log(txtValue, filter1, filterIndex);
+   //---------------------------------------------------------------------------------\\
             for (let patient of patientModel) {
                 if (filterIndex > -1) {
 
                     //filter1.forEach(myFunction());
 
                     for (let index in filter1) {
-
+                        console.log(index);
                         let tabell = patient.name.includes(filter1[index]);
-
-                        //if (tabell) {
-                        //    searchPatientList += `<tr><td class="tableDiv">${patient.name}</td></tr>`;
-                        //}
-                        searchPatientList += `<tr><td class="tableDiv">${patient.name}</td></tr>`;
+                            
+                        if (tabell) {
+                            searchPatientList += `<tr><td class="tableDiv">${patient.name}</td></tr>`;
+                        }
+                        //searchPatientList += `<tr><td class="tableDiv">${patient.name}</td></tr>`;
                     }
 
                 }
             }
             //document.getElementById("searchResult").innerHTML = patient.name.filter(filter1.indexOf(filter1)) + "</table>";
             document.getElementById("searchResult").innerHTML += searchPatientList + "</table>";
-
+    //------------------------------------------------------------------------------------\\
         }
         async function hentUtPasienter(patient) {
             $(document).ready(function () {
