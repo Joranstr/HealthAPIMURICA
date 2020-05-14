@@ -38,7 +38,7 @@ namespace DbInfoUpdater
                 //_logger.LogInformation("før getasync");
                 try
                 {
-                    var result = await client.GetAsync("http://localhost:44309/api/patients"); //http://www.vg.no https://localhost:44386/index.html
+                    var result = await client.GetAsync("http://localhost:5000/api/patients"); //http://www.vg.no https://localhost:44386/index.html
 
                     if (result.IsSuccessStatusCode)
                     {
