@@ -6,6 +6,7 @@
     <!--<script src="lib/jquery/jquery.min.js"></script>-->
     <!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
         body {
             padding: 0;
@@ -126,6 +127,8 @@
     </div>
     <!--<iframe width="560" height="315" style="visibility: hidden" src="https://www.youtube.com/embed/U1mlCPMYtPk?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
     <script>
+        
+
         let patientModel = { name: "", ailments: [], medications: [] };
         let Ailments = [];
         let Medications = [];
@@ -137,81 +140,41 @@
         let patientName = "";
         //----------------------------------------------------------------front page---------------------------------------------------------------------------------------------------------
         Show();
-        function Show() {
+        function Show()
+        {
             document.getElementById("main").innerHTML = `<div class="page">
-                                                                        <div class="header"><h3>USA's "New" Health System</h3></div>
-                                                                        <div class="buttonGroup">
-                                                                            <button onclick="GotoPatients()">Go to Patients</button>
-                                                                            <button onclick="GetSinglePatient()">Search for Patient</button>
-                                                                            <button onclick="GoToRegisterPatient()">Go to Register Patient</button>
-                                                                            <button onclick="GoToRegisterNewMedication()">Registrer new Medication</button>
-                                                                        </div>
-                                                                        <pre id="preOutput"></pre>
-                                                                     </div>`;
+                                                                            <div class="header"><h3>USA's "New" Health System</h3></div>
+                                                                            <div class="buttonGroup">
+                                                                                <button onclick="GotoPatients()">Go to Patients</button>
+                                                                                <button onclick="GetSinglePatient()">Search for Patient</button>
+                                                                                <button onclick="GoToRegisterPatient()">Go to Register Patient</button>
+                                                                                <button onclick="GoToRegisterNewMedication()">Registrer new Medication</button>
+                                                                            </div>
+                                                                            <pre id="preOutput"></pre>
+                                                                         </div>`;
         }
         //----------------------------------------------------search for patient------------------------------------------------------------------------------------------------------------
-        function GetSinglePatient() {
+        
+        function GetSinglePatient() 
+        {
             GetPatients();
             document.getElementById("main").innerHTML = `<div class="page">
-                                                                            <div class="header"><h3>Search for patient</h3></div>
-                                                                            <input type="text" id="searchBox" placeholder="Search for Patient" onkeyup="MakeSearchForPatient()" title="Type in name of patient"/>
-                                                                            <div id="searchResult"></div>
-                                                                     </div>`;
-        }
-        var ages = [32, 33, 16, 40];
-
-        function checkAdult(age) {
-            return age >= 18;
+                                                                                <div class="header"><h3>Search for patient</h3></div>
+                                                                                <input type="text" id="searchBox" placeholder="Search for Patient" oninput = "MakeSearchForPatient()" title="Type in name of patient"/>
+                                                                                <div id="searchResult"></div>
+                                                                         </div>`;
         }
 
-        function myFunction() {
-            let tabell = patient.name.includes(filter1[index]);
-            if (tabell) {
-                searchPatientList += `<tr><td class="tableDiv">${patient.name}</td></tr>`;
-            }
-            //document.getElementById("searchResult").innerHTML = ages.filter(checkAdult);
-        }
-
-
-        async function MakeSearchForPatient() {
-            document.getElementById("searchResult").innerHTML = "";
+        async function MakeSearchForPatient()
+        {
+            const search = document.getElementById('searchBox').value.toLowerCase();
             await GetPatients();
-            searchPatientList = `<table id="patientTable"><tr><th>Patient Name</th></tr>`;
-            let txtValue = document.getElementById('searchBox');
-            var filter1 = txtValue.value.toUpperCase();
-            let filterIndex = filter1.indexOf(filter1);
-            //console.log(txtValue, filter1, filterIndex);
-   //---------------------------------------------------------------------------------\\
-            for (let patient of patientModel) {
-                if (filterIndex > -1) {
-
-                    //filter1.forEach(myFunction());
-
-                    for (let index in filter1) {
-                        console.log(index);
-                        let tabell = patient.name.includes(filter1[index]);
-                            
-                        if (tabell) {
-                            searchPatientList += `<tr><td class="tableDiv">${patient.name}</td></tr>`;
-                        }
-                        //searchPatientList += `<tr><td class="tableDiv">${patient.name}</td></tr>`;
-                    }
-
-                }
+            let searchPatientList = `<table id ="patientTable"><theader><tr><th>Patient</th></tr></header><tbody id="myTable">`;
+            const filteredList = patientModel.filter(p=>p.name.toLowerCase().includes(search));
+            for (let patient of filteredList) {
+                searchPatientList += `<tr><td>${patient.name}</td></tr>`;
             }
-            //document.getElementById("searchResult").innerHTML = patient.name.filter(filter1.indexOf(filter1)) + "</table>";
-            document.getElementById("searchResult").innerHTML += searchPatientList + "</table>";
-    //------------------------------------------------------------------------------------\\
-        }
-        async function hentUtPasienter(patient) {
-            $(document).ready(function () {
-                $("#searchBox").on("keyup", function () {
-                    var value = $(this).val().toLowerCase();
-                    $("#patientTable tr").filter(function () {
-                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                    });
-                });
-            });
+            document.getElementById("searchResult").innerHTML = searchPatientList + "</tbody ></table>";
         }
 
         //---------------------------------------------------see all patient-----------------------------------------------------------------------------------------------------------------------------
@@ -219,17 +182,17 @@
             //denne skal viste pasienter.
             GetPatients();
             document.getElementById("main").innerHTML = `<div class="page">
-                                                                        <div class="header"><h3>All patiens</h3></div>
-                                                                        <div id="ShowPatients">${patientList}</div>
-                                                                        <button onclick="GoToRegisterPatient()"></button>
-                                                                     </div>` ;
+                                                            <div class="header"><h3>All patiens</h3></div>
+                                                            <div id="ShowPatients">${patientList}</div>
+                                                            <button onclick="GoToRegisterPatient()"></button>
+                                                         </div>` ;
             patientListFunc();
         }
 
         async function patientListFunc() {
             await GetPatients();
             patientList += `<table id ="patientTable"><tr><th>Patient</th><th>Ailment</th><th>Medication></th><th>Doses</th></tr>`;
-            let p = patientModel.name;
+            //let p = patientModel.name;
             for (let patient of patientModel) {
                 var i = patient.id;
                 console.log(patient.medications[patient.medications.length - 1]);
@@ -247,6 +210,7 @@
             patientList += "</table>";
             document.getElementById("ShowPatients").innerHTML = patientList;
         }
+        
 
         async function ailmentArray() {
             await GetAilments();
@@ -269,16 +233,16 @@
         //---------------------------------------------------------------------Register Patient--------------------------------------------------------------------------------------------------------------
         function GoToRegisterPatient() {
             document.getElementById("main").innerHTML = `<div class="page">
-                                                                            <div class="header"><h3>Patient Registration</h3></div>
-                                                                            <label type="text" id="name">Patient name</label>
-                                                                            <input id ="addPatientName" type="text"/>
-                                                                            <label id="ailment">Ailment</label>
-                                                                            <select id="addAilment">${text}</select>
-                                                                            <label id="medication">Medisin</label>
-                                                                            <select id="addMedisin">${text2}</select>
-                                                                            <input type="submit" id="addPatient" onclick="GetValueFromInput()" value="Add Patient"/>
-                                                                            <button onclick="GoToPatiens()">Go to Patients</button>
-                                                                     </div>`;
+                                                                                <div class="header"><h3>Patient Registration</h3></div>
+                                                                                <label type="text" id="name">Patient name</label>
+                                                                                <input id ="addPatientName" type="text"/>
+                                                                                <label id="ailment">Ailment</label>
+                                                                                <select id="addAilment">${text}</select>
+                                                                                <label id="medication">Medisin</label>
+                                                                                <select id="addMedisin">${text2}</select>
+                                                                                <input type="submit" id="addPatient" onclick="GetValueFromInput()" value="Add Patient"/>
+                                                                                <button onclick="GoToPatiens()">Go to Patients</button>
+                                                                         </div>`;
             medicationArray();
             ailmentArray();
         }
@@ -326,11 +290,11 @@
             patientModel = response.data;
         }
 
-                    //async function GetPatientByName() {
-                    //    let response = await axios.get(`/api/patients/name/${patientName}`);
-                    //    patientByName = response.data;
-                    //    DisplayPatient(patientName);
-                    //}
+        //async function GetPatientByName() {
+        //    let response = await axios.get(`/api/patients/name/${patientName}`);
+        //    patientByName = response.data;
+        //    DisplayPatient(patientName);
+        //}
     </script>
 </body>
 </html>
