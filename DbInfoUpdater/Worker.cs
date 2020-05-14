@@ -38,7 +38,7 @@ namespace DbInfoUpdater
                 //_logger.LogInformation("før getasync");
                 try
                 {
-                    var result = await client.GetAsync("http://localhost:50440/api/patients"); //http://www.vg.no https://localhost:44386/index.html
+                    var result = await client.GetAsync("http://localhost:44309/api/patients"); //http://www.vg.no https://localhost:44386/index.html
 
                     if (result.IsSuccessStatusCode)
                     {
@@ -60,7 +60,7 @@ namespace DbInfoUpdater
                     _logger.LogInformation(e, "Catch");
                 }
 
-                await Task.Delay(5000, stoppingToken);
+                await Task.Delay(2000, stoppingToken);
             }
         }
     }
