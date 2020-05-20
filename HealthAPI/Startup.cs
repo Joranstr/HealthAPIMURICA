@@ -28,10 +28,8 @@ namespace HealthAPI
             services.AddControllers();
             services.AddDbContext<HealthContext>(o =>
             o.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-           services.AddScoped<IHealthModelRepository, HealthDb>();
-       
-            services.AddScoped<HealthService>();
+            services.AddScoped<IPatientRepository, HealthDb>();
+           services.AddScoped<HealthService>();
     
         }
 

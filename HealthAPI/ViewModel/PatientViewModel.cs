@@ -28,6 +28,9 @@ namespace HealthAPI.ViewModel
 
         public Patient ConvertToPatient()
         {
+            var ailmentIds = Ailments.Select(a => a.Id);
+            var medicationIds = Medications.Select(m=>m.Id);
+
             var patient = new Patient();
             //patient.PatientAilments = new List<PatientAilments>();
             //patient.PatientMedications = new List<PatientMedications>();

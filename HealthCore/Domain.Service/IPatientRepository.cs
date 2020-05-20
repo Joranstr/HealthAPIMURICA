@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace HealthCore.Domain.Service
 {
-    public interface IHealthModelRepository
+    public interface IPatientRepository
     {
+        Task<List<Patient>> GetAll();
         Task<int> CreateAsync(Patient patientModel);
         Task<Patient> ReadAsync(int id);
         Task<int> UpdateAsync(Patient patientModel);

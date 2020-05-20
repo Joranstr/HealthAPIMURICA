@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HealthAPI.ViewModel;
+using HealthCore.Application.Service;
 using HealthCore.Domain.Model;
 using HealthSQLDB.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,12 @@ namespace HealthAPI.Controllers
     //[EnableCors("HealthPolicy")]
     public class PatientsController : ControllerBase
     {
-        private readonly HealthContext _context;
+        private HealthService _healthService;
+        private HealthContext _context;
 
-        public PatientsController(HealthContext context)
+        public PatientsController(HealthContext context, HealthService healthService)
         {
+            _healthService = healthService;
             _context = context;
         }
 
@@ -94,30 +97,31 @@ namespace HealthAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<PatientViewModel>> PostPatient(PatientViewModel patient)
         {
+            var p = patient.ConvertToPatient();
+            var newPatient = await _healthService.CreatePatient(p);
 
-            var newPatient = patient.ConvertToPatient();
-            _context.Patients.Add(newPatient);
-            await _context.SaveChangesAsync();
+            //_context.Patients.Add(newPatient);
+            //await _context.SaveChangesAsync();
 
-            newPatient.PatientAilments = new List<PatientAilments>();
-            newPatient.PatientMedications = new List<PatientMedications>();
+            //newPatient.PatientAilments = new List<PatientAilments>();
+            //newPatient.PatientMedications = new List<PatientMedications>();
 
-            foreach (var ailment in patient.Ailments)
-            {
-                var Ailment = await _context.Ailments.FirstOrDefaultAsync(a => a.Id == ailment.Id);
-                var patientAilment = new PatientAilments() {Patient = newPatient, PatientId = newPatient.PatientId, Ailment = Ailment, AilmentId = Ailment.Id };
-                newPatient.PatientAilments.Add(patientAilment);
-            }
+            //foreach (var ailment in patient.Ailments)
+            //{
+            //    var Ailment = await _context.Ailments.FirstOrDefaultAsync(a => a.Id == ailment.Id);
+            //    var patientAilment = new PatientAilments() {Patient = newPatient, PatientId = newPatient.PatientId, Ailment = Ailment, AilmentId = Ailment.Id };
+            //    newPatient.PatientAilments.Add(patientAilment);
+            //}
 
-            foreach (var medication in patient.Medications)
-            {
-                var Medication = await _context.Medications.FirstOrDefaultAsync(m => m.Id == medication.Id);
-                var patientMedication = new PatientMedications() { Patient = newPatient, PatientId = newPatient.PatientId, Medication = Medication, MedicationId = Medication.Id };
-                newPatient.PatientMedications.Add(patientMedication);
-            }
+            //foreach (var medication in patient.Medications)
+            //{
+            //    var Medication = await _context.Medications.FirstOrDefaultAsync(m => m.Id == medication.Id);
+            //    var patientMedication = new PatientMedications() { Patient = newPatient, PatientId = newPatient.PatientId, Medication = Medication, MedicationId = Medication.Id };
+            //    newPatient.PatientMedications.Add(patientMedication);
+            //}
 
-            _context.Patients.Update(newPatient);
-            await _context.SaveChangesAsync();
+            //_context.Patients.Update(newPatient);
+            //await _context.SaveChangesAsync();
 
             return new PatientViewModel(newPatient);
             //CreatedAtAction("GetPatient", new { id = patient.PatientId }, patient);
